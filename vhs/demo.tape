@@ -2,7 +2,8 @@
 
 # Settings
 Output univiz-demo.gif
-Set FontSize 16
+Output univiz-demo.svg
+Set FontSize 22
 Set Width 1200
 Set Height 800
 Set Theme "Dracula"
