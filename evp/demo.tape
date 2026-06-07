@@ -1,4 +1,4 @@
-# VHS demo tape for univiz
+# EVP demo tape for univiz
 
 # Settings
 Output univiz-demo.gif
