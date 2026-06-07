@@ -8,8 +8,8 @@ repository = "https://github.com/bozenalabs/univiz"
 homepage = "https://github.com/bozenalabs/univiz"
 keywords = ["unicode", "grapheme", "utf8", "analysis", "cli"]
 categories = ["command-line-utilities", "text-processing"]
-authors = ["Bozena Labs"]
-exclude = ["evp/*.gif", "evp/*.svg"]
+authors = ["Hal Frigaard"]
+exclude = ["*.gif", "*.svg"]
 
 [dependencies]
 unicode-segmentation = "1.12.0"

@@ -9,7 +9,7 @@ RUN useradd -m -d /home/john -s /bin/bash john
 RUN mkdir -p /home/john/bin && chown -R john:john /home/john
 
 # Set environment variables for evp installation
-ENV EVP_VERSION=v0.9.0
+ENV EVP_VERSION=v0.10.0
 ENV EVP_INSTALL_DIR=/home/john/bin
 ENV PATH="/home/john/bin:${PATH}"
 
@@ -28,7 +28,7 @@ RUN chown john:john /app
 USER john
 
 # Copy the demo.tape file
-COPY --chown=john:john evp/demo.tape /app/demo.tape
+COPY --chown=john:john demo/demo.tape /app/demo.tape
 
 # Run evp to generate the gif/svg
 RUN evp demo.tape

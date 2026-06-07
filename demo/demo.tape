@@ -13,13 +13,10 @@ Set TypingSpeed 50ms
 Require univiz
 
 # Demo
+Sleep 100ms
 Type "# Univiz - utf8 string analyzer"
 Enter
 Sleep 1s
-
-Type "univiz"
-Enter
-Sleep 3s
 
 Type 'univiz "Hello 👋"'
 Enter
@@ -28,5 +25,10 @@ Sleep 3s
 Type 'univiz "café 😀🎉"'
 Enter
 Sleep 3s
+
+Type 'univiz "café 😀🎉" --json'
+Enter
+Sleep 3s
+
 
 Sleep 2s
