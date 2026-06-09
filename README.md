@@ -16,7 +16,7 @@ univiz "your string here"
 
 ## Example Output
 
-![Univiz Demo](vhs/univiz-demo.gif)
+![Univiz Demo](demo/univiz-demo.gif)
 
 ## Features
 
