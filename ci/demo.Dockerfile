@@ -1,8 +1,8 @@
 # Stage 1: Build the environment and run the demo
-FROM debian:bookworm-slim AS builder
+FROM debian:bookworm-slim AS demo-runner
 
-# Install curl and ca-certificates to download evp
-RUN apt-get update && apt-get install -y curl ca-certificates && rm -rf /var/lib/apt/lists/*
+# Install curl, ca-certificates, and less
+RUN apt-get update && apt-get install -y curl ca-certificates less && rm -rf /var/lib/apt/lists/*
 
 # Create user john and set up the installation directory
 RUN useradd -m -d /home/john -s /bin/bash john
@@ -14,10 +14,11 @@ ENV EVP_INSTALL_DIR=/home/john/bin
 ENV PATH="/home/john/bin:${PATH}"
 
 # Install evp
-RUN sh -c '/usr/bin/curl -sSfL https://raw.githubusercontent.com/HalFrgrd/evp/master/install.sh | sh'
+# RUN sh -c '/usr/bin/curl -sSfL https://raw.githubusercontent.com/HalFrgrd/evp/master/install.sh | sh'
+COPY evp /home/john/bin/
 
 # Copy the local univiz binary
-COPY target/debug/univiz /home/john/bin/univiz
+COPY --from=builder /univiz /home/john/bin/univiz
 RUN chmod +x /home/john/bin/univiz
 
 # Set up the working directory
@@ -28,15 +29,12 @@ RUN chown john:john /app
 USER john
 
 # Copy the demo.tape file
-COPY --chown=john:john demo/demo.tape /app/demo.tape
+COPY --chown=john:john ci/demo.tape /app/demo.tape
 
 # Run evp to generate the gif/svg
-RUN evp demo.tape
-
-# Default command if run interactively
-CMD ["evp", "demo.tape"]
+WORKDIR /home/john
+RUN $EVP_INSTALL_DIR/evp /app/demo.tape
 
 # Stage 2: Exporter stage to extract the generated gif
 FROM scratch AS exporter
-COPY --from=builder /app/univiz-demo.gif /univiz-demo.gif
-COPY --from=builder /app/univiz-demo.svg /univiz-demo.svg
+COPY --from=demo-runner /home/john/*.gif /home/john/*.svg /

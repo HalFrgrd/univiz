@@ -1,8 +1,18 @@
 target "default" {
   context    = "."
-  dockerfile = "demo/demo.Dockerfile"
+  dockerfile = "ci/build.Dockerfile"
+  output     = ["type=local,dest=ci/build"]
+}
+
+target "demo" {
+  context    = "."
+  contexts   = {
+    builder = "target:default"
+  }
+  dockerfile = "ci/demo.Dockerfile"
   args = {
     BUILDKIT_SANDBOX_HOSTNAME = "my-desktop"
   }
-  output = ["type=local,dest=demo"]
+  output = ["type=local,dest=ci/"]
 }
+
