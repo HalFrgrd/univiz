@@ -22,6 +22,10 @@ struct Cli {
     /// The string to analyze (default: 'aé😀👩‍💻')
     text: Option<String>,
 
+    /// Read from stdin
+    #[arg(long, conflicts_with = "text")]
+    stdin: bool,
+
     /// Print as JSON instead of bare text
     #[arg(long)]
     json: bool,
@@ -74,15 +78,14 @@ struct Utf8ByteInfo {
 
 fn main() {
     let cli = Cli::parse();
-    let s = if let Some(text) = cli.text {
+    let s = if cli.stdin {
+        let mut buffer = String::new();
+        io::stdin().read_to_string(&mut buffer).expect("Failed to read from stdin");
+        buffer
+    } else if let Some(text) = cli.text {
         text
     } else {
-        let mut buffer = String::new();
-        if io::stdin().read_to_string(&mut buffer).is_ok() && !buffer.is_empty() {
-            buffer
-        } else {
-            "aé😀👩‍💻".to_string()
-        }
+        "aé😀👩‍💻".to_string()
     };
 
     if cli.json {
@@ -224,5 +227,22 @@ mod tests {
         assert!(json.contains("\"byteIdx\":0"));
         assert!(json.contains("\"byteIdxGlobal\":0"));
         assert!(json.contains("\"utf8Bytes\":["));
+    }
+
+    #[test]
+    fn test_cli_parsing() {
+        // Test positional text argument
+        let cli = Cli::try_parse_from(["univiz", "hello"]).unwrap();
+        assert_eq!(cli.text, Some("hello".to_string()));
+        assert!(!cli.stdin);
+
+        // Test stdin flag without text
+        let cli = Cli::try_parse_from(["univiz", "--stdin"]).unwrap();
+        assert_eq!(cli.text, None);
+        assert!(cli.stdin);
+
+        // Test conflict between --stdin and positional text
+        let result = Cli::try_parse_from(["univiz", "--stdin", "hello"]);
+        assert!(result.is_err());
     }
 }
