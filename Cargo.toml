@@ -1,6 +1,6 @@
 [package]
 name = "univiz"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2024"
 license = "MIT"
 description = "A command-line tool for analyzing Unicode strings, providing detailed information about graphemes, code points, and UTF-8 byte sequences"
