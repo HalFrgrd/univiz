@@ -4,6 +4,16 @@ A command-line tool for analyzing Unicode strings, providing detailed informatio
 
 ## Installation
 
+### Quick install: `install.sh`
+
+> [!TIP]
+> Run the following command to download univiz. No need for `sudo`!
+```bash
+curl -sSfL https://github.com/halfrgrd/univiz/releases/latest/download/install.sh | sh
+```
+
+### Via Cargo
+
 ```bash
 cargo install univiz
 ```
